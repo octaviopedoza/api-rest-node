@@ -19,7 +19,14 @@ app.use(cors());
 app.use(express.json());
 
 // Crear rutas
-
+app.get("/probando", (req, res) => {
+    console.log("se a ejecutado el endpoint probando");
+    return res.status(200).send({
+        curso: "Master en NodeJS",
+        autor: "Octavio Pedroza",
+        url: "http://localhost:3900/probando"
+    });
+})
 
 //Crear servidor y escuchar peticiones http
 app.listen(puerto, () => {
