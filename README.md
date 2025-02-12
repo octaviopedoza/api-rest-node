@@ -28,3 +28,14 @@ si es una peticion que devuelve algo con exito usaremos el codigo 200 ó un 404 
         url: "http://localhost:3900/probando"
     });
 Aqui estamos devolviendo un json usando el metodo send.
+--------------------------------------------------------------------------------------
+20.- Para crear nuestro controllador debemos de crear una carpeta en la reaíz del proyecto llamada "controllers", aqui dentro vamos a crear nuestro archivo el cual debe ra de llamarse igual que nuestro modelo con la diferencia de que la primer letra sera minuscula por ejemplo, si nuetro modelo se llama Articulo.js nuestro controlador se llamara articulo.js.
+21.- Creamos un metodo de prueba con una constante prueba y lo que va a hacer es recibir como parametro el req y el res, el request son los datos que le llegan y el response los datos que responde o manda: "const test = (requ, res)".
+22.- Con esto definimos nuestro metodo aperturando una funcion flecha donde vamos a hacer un return, vamos a hacer reques Status 200 para que devuelva una respuesta de exito y vamos a hacer JSon para que nos devuelva un json simple:
+"return res.status(200).json({
+    mensaje: "Soy una respuesta de accion al controlador de articulos"
+});"
+Esto es muy similar a lo realizado anteriormente.
+23.- Ahora es muy importante saber que cada metodo que se crea lo tenemos que exportar al final del archivo:
+"module.exports = { prueba }"
+24.- 
