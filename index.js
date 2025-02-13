@@ -1,6 +1,7 @@
 const {conexion} = require('./mongoodb/conexion'); //Requerimos la conexion a la DB
 const express = require('express');
 const cors = require('cors');
+const rutas_articulo = require('./routes/articulo');
 
 //Inicializa app
 console.log("app de node arrancada");
@@ -18,7 +19,10 @@ app.use(cors());
 //Convertir body a objeto js
 app.use(express.json());
 
-// Crear rutas
+//Rutas por controlador
+app.use('/api', rutas_articulo);
+
+// Crear rutas hardcodeadas
 app.get("/probando", (req, res) => {
     console.log("se a ejecutado el endpoint probando");
     return res.status(200).send({

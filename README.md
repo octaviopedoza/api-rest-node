@@ -29,7 +29,7 @@ si es una peticion que devuelve algo con exito usaremos el codigo 200 ó un 404 
     });
 Aqui estamos devolviendo un json usando el metodo send.
 --------------------------------------------------------------------------------------
-20.- Para crear nuestro controllador debemos de crear una carpeta en la reaíz del proyecto llamada "controllers", aqui dentro vamos a crear nuestro archivo el cual debe ra de llamarse igual que nuestro modelo con la diferencia de que la primer letra sera minuscula por ejemplo, si nuetro modelo se llama Articulo.js nuestro controlador se llamara articulo.js.
+20.- Para crear nuestro controllador debemos de crear una carpeta en la reaíz del proyecto llamada "controllers", aqui dentro vamos a crear nuestro archivo el cual debera de llamarse igual que nuestro modelo con la diferencia de que la primer letra sera minuscula por ejemplo, si nuetro modelo se llama Articulo.js nuestro controlador se llamara articulo.js.
 21.- Creamos un metodo de prueba con una constante prueba y lo que va a hacer es recibir como parametro el req y el res, el request son los datos que le llegan y el response los datos que responde o manda: "const test = (requ, res)".
 22.- Con esto definimos nuestro metodo aperturando una funcion flecha donde vamos a hacer un return, vamos a hacer reques Status 200 para que devuelva una respuesta de exito y vamos a hacer JSon para que nos devuelva un json simple:
 "return res.status(200).json({
@@ -38,12 +38,13 @@ Aqui estamos devolviendo un json usando el metodo send.
 Esto es muy similar a lo realizado anteriormente.
 23.- Ahora es muy importante saber que cada metodo que se crea lo tenemos que exportar al final del archivo:
 "module.exports = { prueba }"
+---------------------------------------------------------------------------------------
 24.- Ahora vamos a crear un archivo llamado igual que el controlador dentro de una carpeta "routes" para manejar las rutas.
 25.- Creamos una constante llamada express y el require express: "const express = require('express')".
 26.- Creamos otra constante que se llamara router y llamamos al metodo router: "const router = express.Router()"
 27.- Ahora vamos a definir la primera ruta, para crear una ruta dentro de Node usamos el objeto router y utilizamos uno de los metodos http que necesitamos, vamos a crear una ruta get por lo que le indicamos ala ruta el metodo http get, dentro de este metodo le pasamos dos parametros, primero el nombre de mi url por ejemplo puede ser "/" ó "/prueba" y despues le indicamos que metodo vamos a hacer o cargar por lo que vamos a cargar el controlador en la parte superior.
 28.- Entonces vamos a agregar debajo de la constante router una nueva variable constante donde vamos a requerir la ruta del controlador: "const ArticuloController = require('../carpeta/nombre_archivo').
-29.- Ahora agregamos esste controlador dentro de la rurta que estamos creando seguido del metodo a usar en este cado el metodo prueba que creamos dentro del controlador, entonces la ruta quedaria asi: "router.get("/prueba", ArticuloController.prueba)"
+29.- Ahora agregamos este controlador dentro de la ruta que estamos creando seguido del metodo a usar en este caso el metodo prueba que creamos dentro del controlador, entonces la ruta quedaria asi: "router.get("/prueba", ArticuloController.prueba)"
 30.- y al final vamos a exportar el modulo router: "module.exports = router;"
 31.- Ahora dentro del index donde teniamos las rutas de prueba tenemos que definir todas nustras rutas y cargarlas dentro de app con el .use, entonces primero vamos a crear una constante para hacer el require de las rutas: "const rutas_articulo = require('../routes/articulo)" y aqui ya tenemos definidas nuestras rutas en index.
 32.- Puedo cargar las rutas con un prefijo por delante si yo quisiera haciendo "app.use("/api", rutas_articulo)"
