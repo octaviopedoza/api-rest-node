@@ -48,3 +48,9 @@ Esto es muy similar a lo realizado anteriormente.
 30.- y al final vamos a exportar el modulo router: "module.exports = router;"
 31.- Ahora dentro del index donde teniamos las rutas de prueba tenemos que definir todas nustras rutas y cargarlas dentro de app con el .use, entonces primero vamos a crear una constante para hacer el require de las rutas: "const rutas_articulo = require('../routes/articulo)" y aqui ya tenemos definidas nuestras rutas en index.
 32.- Puedo cargar las rutas con un prefijo por delante si yo quisiera haciendo "app.use("/api", rutas_articulo)"
+---------------------------------------------------------------------------------------
+33.- Ahora vamos a crear un endpoint ó lo que es lo mismo una ruta y en este caso sera para guardar un archivo ó crear un archivo dentro de la DB.
+34.- Dentro del archivo de los controladores vamos a crear un nuevo metodo, vamos a crear una constante con el nombre de "create", entonces siguiendo la estructura anterior vamos a solicitar una req y una res y abrimos una funcion flecha donde vamos a indicar un return para que nos regrese la respuesta con un estatus 200, que nos devuelva un json con algo dentro lo cual quedaria algo asi: "const create = (req, res) => { return res.status(200).json({mensaje: "Accion de guardar" }) }".
+35.- Realizado esto es importante que lo dovolvamos dentro del module.exports que se encuentra al final, ahora ya podemos crear su ruta.
+36.- Dentro del archivo de rutas vamos a generarla usando router.post para poder mandar los datos por este metodo HTTP.
+37.- la ruta quedaria algo asi: "router.post("/create", ArticuloControlador.create);"

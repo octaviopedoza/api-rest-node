@@ -22,6 +22,7 @@ app.use(express.json());
 //Rutas por controlador
 app.use('/api', rutas_articulo);
 
+
 // Crear rutas hardcodeadas
 app.get("/probando", (req, res) => {
     console.log("se a ejecutado el endpoint probando");
