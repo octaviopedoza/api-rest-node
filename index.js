@@ -18,10 +18,10 @@ app.use(cors());
 
 //Convertir body a objeto js
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 //Rutas por controlador
 app.use('/api', rutas_articulo);
-
 
 // Crear rutas hardcodeadas
 app.get("/probando", (req, res) => {

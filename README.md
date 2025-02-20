@@ -53,4 +53,20 @@ Esto es muy similar a lo realizado anteriormente.
 34.- Dentro del archivo de los controladores vamos a crear un nuevo metodo, vamos a crear una constante con el nombre de "create", entonces siguiendo la estructura anterior vamos a solicitar una req y una res y abrimos una funcion flecha donde vamos a indicar un return para que nos regrese la respuesta con un estatus 200, que nos devuelva un json con algo dentro lo cual quedaria algo asi: "const create = (req, res) => { return res.status(200).json({mensaje: "Accion de guardar" }) }".
 35.- Realizado esto es importante que lo dovolvamos dentro del module.exports que se encuentra al final, ahora ya podemos crear su ruta.
 36.- Dentro del archivo de rutas vamos a generarla usando router.post para poder mandar los datos por este metodo HTTP.
-37.- la ruta quedaria algo asi: "router.post("/create", ArticuloControlador.create);"
+37.- La ruta quedaria algo asi: "router.post("/create", ArticuloControlador.create);"
+---------------------------------------------------------------------------------------
+38.- Dentro del postman vamos a pasarle por body los datos que son requeridos o que asignamos como requeridos dentro de nuestro modelo.
+39.- Los datos los vamos a mandar desde Body y seleccionamos "x-www-form-urlencode"
+40.- Como primer paso debemos de recoger los datos enviados por el post, por lo cual dentro del controlador de la ruta vamos a crear una variable donde vamos a almacenar dichos datos: "let parametros = req.body;"
+41.- Actualmente nuestro index.js esta configurado para recibir .json, por lo que necesitamos hacer un ajuste agregando un middleware para procesar los datos como un .json viniendo de un formulario nosrmal, necesitamos agregar "app.use(express.urlencoded({extended:true}));". De esta manera express decodifica los datos para poder parcearlos dentro de un objeto .json.
+42.- Ahora vamos a validar los datos usando la libreria Validator por lo que vamos a hacer un require de la libreria en la parte superior con: "const validator = require('validator')".
+43.- Debajo de la variable creada anteriormente vamos a hacer un try y catch para verificar errores, dentro del "try{}" vamos a crear dos variables las cuales se van a encargar de hacer las validadciones, estas variables pueden ser: "let validar_titulo = !validator.isEmpty(parametros.titulo)" con esta linea validadmos que el campo de titulo no este vacio, debemos de hacer esto mismo para cada validación por ejemplo validamos que el contenido del articulo no este vacio con:"let validar_contenido = !validator.isEmpty(parametros.contenido)"
+44.- Despues abrimos un bloque if para lanzar errorres dentro de las validaciones por ejemplo: "if(!validar_titulo || !validar_contenido){throw new Error("informacion no valida")}".
+45.- Dentro del "catch{}" vamos a agregar la parte del error y regresamos un status 400, para esto agregamos las lineas:
+    "catch(error){
+        return res.status(400).json({
+            status: "error",
+            mensaje: "Faltan datos por enviar"
+        });
+    }
+46.- 
