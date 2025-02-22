@@ -1,7 +1,7 @@
 const {conexion} = require('./mongoodb/conexion'); //Requerimos la conexion a la DB
 const express = require('express');
 const cors = require('cors');
-const rutas_articulo = require('./routes/articulo');
+const rutas_articulo = require('./routes/Articulo');
 
 //Inicializa app
 console.log("app de node arrancada");

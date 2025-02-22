@@ -70,4 +70,23 @@ Esto es muy similar a lo realizado anteriormente.
             mensaje: "Faltan datos por enviar"
         });
     }
-46.- 
+---------------------------------------------------------------------------------------
+46.- Ahora vamos a usar el modelo para hacer el guardado de los datos dentro de la DB.
+47.- Dentro del archivo de los controladores vamos a hacer un require de nuestro modelo haciendo: const Articulo = require("../models/Articulo").
+48.- Como mongoose necesita realizar el guardado de los datos usando async y await vamos a agregar un "async" dentro de la constante del controlador create: "const create = async(req, res) =>..."
+49.- Vamos a crear un objeto dentro del controlador para guardar la informacion que se nos esta pasando por el formulario = "const articulo = new Articulo(parametros);".
+50.- Justo despues de esta linea anterior vamos a hacer uso de "try - catch" donde vamos a utilizar el await para esperar el objeto que vamos a guardar:
+     "const articuloGuardado = await articulo.save();"
+51.- y ya solo resta devolver la respuesta de exito y la de error lo cual podemos hacer como anteriormente:
+    "return res.status(200).json({
+            status: "success",
+            articulo: articuloGuardado,
+            mensaje: "Articulo guardado exitosamente"
+        });
+    }catch(error){
+        return res.status(400).json({
+            status: "error",
+            mensaje: "Error al guardar los datos dentro de la DB",
+            error: error.message
+        });
+    }"
