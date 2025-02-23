@@ -2,14 +2,21 @@
 1.- Preparamos el entorno para desarrollo local usando laragon, dentro de laragon debemos de tener instalado MongooDB y Robomongo.
 2.- Iniciamos un proyecto en blanco dentro de nuestro laragon.
 3.- Entramos desde terminal a la carpeta del proyecto y ejecutamos "npm init" para iniciar nuestro proyecto.
-4.- Una vez realizado esto instalamos dependencias con lo siguiente: "npm i express -S", "npm i nodemon -S", "npm i cors -S", "npm i multer", "npm i mongoose -S", "npm i dotenv -S".
+4.- Una vez realizado esto instalamos dependencias con lo siguiente: "npm i express -S", "npm i nodemon -S", "npm i cors -S", "npm i multer", "npm i mongoose -S", "npm i dotenv -S", 
+"npm i validator -S".
+---------------------------------------------------------------------------------------
 5.- Ahora vamos a crear un archivo index.js en la raiz del proyecto.
 6.- Ahora vamos a crear una carpeta para la conexion de la DB y dentro creamos un archivo conexion.js para crear unestra conexion a la DB.
-7.- dentro de este archivo de conexion vamos a requerir a mongoose con: "const mongoose = require('mongoose')".
-8.- Creamos una funcion flecha asincrona donde dentro del try vamos a esperar la respuesta de: "mongoose.conect(url de conecxion);" y dentro del catch capturamos el error.
+7.- Dentro de este archivo de conexion vamos a requerir a mongoose con: "const mongoose = require('mongoose')".
+8.- Creamos una funcion flecha asincrona vacia: "const dbConection = async() =>{..." dentro tendremos nuestro try-catch.
+8.1.- Donde dentro del try vamos a esperar la respuesta de: "mongoose.conect(url de conecxion);" y dentro del catch capturamos el error: 
+    "catch (error) {
+        console.log(error);
+        throw new Error("No se a podido realizar la conecxión a la DB");
+    }"
 9.- Al final exportamos el modulo para su uso en otros archivos con: "module.exports = {nom. funcion flecha anterior};"
 10.- Dentro del archivo indes.js vamos a requerir la conexion a la DB con: "const {conexion} = require('./mongoodb/conexion');"
-11.- Creamos un console.log para verificar la conecxion y al final llamamos la funcion de la conexion con: "conexion();"
+11.- Creamos un console.log para verificar la conecxion:"console.log(app iniciada);" y al final llamamos la funcion de la conexion con: "conexion();"
 --------------------------------------------------------------------------------------
 12.- Ahora vamos a crear el servidor http usando la siguiente linea en la parte superior del archivo index.js: "const express = require('express');"
 13.- Tambien requerimos cors para solucionar errores de conexion con. "const cors = ('cors');"
@@ -90,3 +97,4 @@ Esto es muy similar a lo realizado anteriormente.
             error: error.message
         });
     }"
+------------------------------------------------------------------------------------------
