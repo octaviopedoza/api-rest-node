@@ -15,7 +15,7 @@
         throw new Error("No se a podido realizar la conecxión a la DB");
     }"
 9.- Al final exportamos el modulo para su uso en otros archivos con: "module.exports = {nom. funcion flecha anterior};"
-10.- Dentro del archivo indes.js vamos a requerir la conexion a la DB con: "const {conexion} = require('./mongoodb/conexion');"
+10.- Dentro del archivo indes.js vamos a requerir la conexion a la DB con: "const {conexion} = require('./mongoodb/conexion');", antes de esto devemos requerir: "require('dotenv').config();" para poder hacer uso de las variables dentro del archivo .env
 11.- Creamos un console.log para verificar la conecxion:"console.log(app iniciada);" y al final llamamos la funcion de la conexion con: "conexion();"
 --------------------------------------------------------------------------------------
 12.- Ahora vamos a crear el servidor http usando la siguiente linea en la parte superior del archivo index.js: "const express = require('express');"
