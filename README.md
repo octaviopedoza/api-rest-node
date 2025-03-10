@@ -37,7 +37,7 @@ si es una peticion que devuelve algo con exito usaremos el codigo 200 ó un 404 
 Aqui estamos devolviendo un json usando el metodo send.
 --------------------------------------------------------------------------------------
 20.- Para crear nuestro controllador debemos de crear una carpeta en la reaíz del proyecto llamada "controllers", aqui dentro vamos a crear nuestro archivo el cual debera de llamarse igual que nuestro modelo con la diferencia de que la primer letra sera minuscula por ejemplo, si nuetro modelo se llama Articulo.js nuestro controlador se llamara articulo.js.
-21.- Creamos un metodo de prueba con una constante prueba y lo que va a hacer es recibir como parametro el req y el res, el request son los datos que le llegan y el response los datos que responde o manda: "const test = (requ, res)".
+21.- Creamos un metodo de prueba con una constante prueba y lo que va a hacer es recibir como parametro el req y el res, el request son los datos que le llegan y el response los datos que responde o manda: "const test = (req, res)".
 22.- Con esto definimos nuestro metodo aperturando una funcion flecha donde vamos a hacer un return, vamos a hacer reques Status 200 para que devuelva una respuesta de exito y vamos a hacer JSon para que nos devuelva un json simple:
 "return res.status(200).json({
     mensaje: "Soy una respuesta de accion al controlador de articulos"
@@ -98,3 +98,60 @@ Esto es muy similar a lo realizado anteriormente.
         });
     }"
 ------------------------------------------------------------------------------------------
+Como ordenar los resultados
+### Función `list` para obtener registros de tanques
+
+52.- Esta función es un **manejador de ruta** en un servidor hecho con Node.js. Cuando alguien hace una solicitud (request) a la ruta correspondiente, esta función obtiene los datos de la base de datos, aplica filtros de fecha y devuelve una lista de tanques o un error. A continuación, explico cada parte de la función:
+"const list = async (req, res) => {
+    try {"
+- **`async`**: Esto indica que esta función va a trabajar con procesos que toman tiempo (como consultas a una base de datos). Usamos **`await`** dentro de la función para esperar que se completen esos procesos antes de continuar con el código.
+**`req`**: Es el objeto que contiene toda la información sobre la solicitud que hizo el usuario (como parámetros y datos enviados).
+**`res`**: Es el objeto con el que vamos a enviar una respuesta al usuario después de procesar la solicitud.
+53.- **Obteniendo los parámetros de fecha**
+"const {startDate, endDate} = req.query;"
+**`req.query`**: Esto obtiene los parámetros que el usuario haya enviado en la URL, específicamente en la parte de consulta (por ejemplo, `?startDate=2025-01-01&endDate=2025-03-10`).
+**`startDate`** y **`endDate`**: Son las fechas de inicio y fin que el usuario puede enviar para filtrar los resultados.
+54.- **Creando el filtro de fechas**
+"let filtrosFecha = {};"
+**`filtrosFecha`**: Es un objeto vacío que vamos a usar para almacenar las condiciones de filtro de fechas.
+"if (startDate) {
+    filtrosFecha.fecha = { $gte: new Date(startDate) }; // Fechas mayores o iguales a startDate
+}"
+Si el usuario ha enviado una **`startDate`** (fecha de inicio), se agrega una condición al filtro que dice "fecha mayor o igual a `startDate`".
+"if (endDate) {
+    filtrosFecha.fecha = filtrosFecha.fecha || {}; // Si ya existe un filtro mantenemos
+    filtrosFecha.fecha.$lte = new Date(endDate); // Fechas menores o iguales a endDate
+}"
+Si el usuario ha enviado una **`endDate`** (fecha de fin), se agrega otra condición al filtro que dice "fecha menor o igual a `endDate`".
+55.- **Consultando la base de datos**
+"const tanque = await Tanques.find({}).sort({ fecha: -1 });"
+**`Tanques.find({})`**: Busca todos los registros en la colección de "Tanques" de la base de datos. Si pasamos un objeto vacío `{}`, significa que no hay ningún filtro específico para la consulta.
+**`.sort({ fecha: -1 })`**: Esto ordena los resultados de la base de datos de forma descendente (de la más reciente a la más antigua) según la fecha.
+56.- **Manejo de errores y respuesta**
+"if (!tanque || tanque.length === 0) {
+    return res.status(404).json({
+        status: "error",
+        mensaje: "No se encontraron registros de tanques"
+    });
+}"
+Si no se encuentran tanques en la base de datos (`tanque` está vacío), la función devuelve un **error 404**, lo que significa que no se encontraron datos.
+"return res.status(200).json({
+    status: "success",
+    tanques: tanque
+});"
+Si todo sale bien y se encuentran los registros, se devuelve una respuesta con código **200 (éxito)**, y el cuerpo de la respuesta contiene los datos de los tanques.
+57.- **Manejo de errores en la base de datos**
+"} catch (error) {
+    return res.status(500).json({
+        status: "error",
+        mensaje: "Error en la consulta de la DB",
+        error: error.message
+    });
+}"
+Si algo sale mal (por ejemplo, un error en la base de datos), la función captura ese error y devuelve una respuesta con el código **500 (error del servidor)**.
+### Resumen
+Esta función permite:
+1. Filtrar los registros de los tanques por fechas, si el usuario proporciona las fechas de inicio y fin.
+2. Consultar los registros de los tanques ordenados por fecha de forma descendente (de lo más reciente a lo más antiguo).
+3. Enviar una respuesta al usuario con los registros encontrados o un mensaje de error si no se encuentran registros o si ocurre un problema.
+La función está diseñada para que el usuario pueda filtrar por fechas opcionales y obtener los resultados de la base de datos de manera eficiente.
