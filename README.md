@@ -155,3 +155,62 @@ Esta función permite:
 2. Consultar los registros de los tanques ordenados por fecha de forma descendente (de lo más reciente a lo más antiguo).
 3. Enviar una respuesta al usuario con los registros encontrados o un mensaje de error si no se encuentran registros o si ocurre un problema.
 La función está diseñada para que el usuario pueda filtrar por fechas opcionales y obtener los resultados de la base de datos de manera eficiente.
+-----------------------------------------------------------------------------------------------------
+Obtener un solo registro
+### Función `uno` para obtener un solo artículo (tanque)
+58.- Esta función está diseñada para obtener un artículo (tanque) específico desde la base de datos usando su **ID**. Si el artículo existe, lo devuelve al usuario; si no, muestra un error. Además, si ocurre algún error durante la consulta, lo maneja adecuadamente.
+```js
+const uno = async (req, res) => {
+```
+**`async`**: Marca la función como asincrónica, lo que significa que usará **`await`** para esperar la respuesta de la base de datos antes de continuar.
+**`req`**: Es el objeto de la solicitud. Contiene los parámetros que el usuario envía, como el **ID** del artículo (tanque) en la URL.
+**`res`**: Es el objeto de respuesta. A través de él, se enviará la respuesta al usuario.
+59.- **Recogiendo el ID de la URL**
+```javascript
+let id = req.params.id;
+```
+**`req.params.id`**: Obtiene el **ID** del artículo desde la URL de la solicitud. En una ruta como `/tanques/:id`, `id` sería el valor que el usuario pasa en la URL (por ejemplo: `/tanques/12345`).
+60.- **Buscando el artículo en la base de datos**
+```javascript
+const tanque = await Tanques.findById(id);
+```
+**`Tanques.findById(id)`**: Es un método de Mongoose que busca un documento en la colección de "Tanques" con el ID proporcionado. Usa **`await`** para esperar a que se complete la búsqueda en la base de datos.
+**`await`**: Hace que el código espere hasta que la consulta a la base de datos se complete antes de continuar. Esto evita que el código siga ejecutándose mientras espera la respuesta.
+61.- **Comprobando si el artículo fue encontrado**
+```javascript
+if (!tanque) {
+    return res.status(404).json({
+        status: "error",
+        mensaje: "No se ha encontrado el articulo"
+    });
+}
+```
+**`if (!tanque)`**: Si no se encuentra un artículo con el **ID** proporcionado (es decir, `tanque` es `null` o `undefined`), se devuelve una respuesta con el código **404**, que significa "No encontrado". Además, se envía un mensaje de error en el cuerpo de la respuesta.
+62.- **Devolviendo la respuesta exitosa**
+```javascript
+return res.status(200).json({
+    status: "success",
+    tanque: tanque
+});
+```
+Si se encuentra el artículo, se devuelve una respuesta con el código **200** (éxito) y el artículo encontrado (`tanque`) en formato JSON. Esto es lo que el usuario verá como resultado de su solicitud.
+63.- **Manejo de errores**
+```javascript
+} catch (error) {
+    return res.status(500).json({
+        status: "error",
+        mensaje: "Error al buscar el artículo",
+        error: error.message
+    });
+}
+```
+**`try/catch`**: El bloque `try` ejecuta la consulta, y si ocurre algún error (por ejemplo, problemas de conexión con la base de datos), el bloque `catch` captura ese error.
+**`res.status(500)`**: Si ocurre un error, se devuelve una respuesta con el código **500**, que significa "Error interno del servidor". Además, se incluye el mensaje de error generado por la base de datos (`error.message`), lo que ayuda a identificar el problema.
+### Resumen
+Esta función hace lo siguiente:
+1. **Recoge el ID** de la URL de la solicitud.
+2. **Busca un artículo** (tanque) en la base de datos utilizando ese ID.
+3. Si el artículo **no se encuentra**, devuelve un **error 404** con un mensaje que indica que el artículo no fue encontrado.
+4. Si el artículo se **encuentra correctamente**, devuelve una respuesta exitosa (**200**) con los datos del artículo.
+5. Si hay un **error** en el proceso (por ejemplo, problemas con la base de datos), devuelve un **error 500** con detalles sobre el error.
+Este código permite que el usuario obtenga un solo tanque a partir de su ID de forma eficiente, manejando los posibles errores de manera clara y profesional.
