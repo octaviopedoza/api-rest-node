@@ -214,3 +214,48 @@ Esta función hace lo siguiente:
 4. Si el artículo se **encuentra correctamente**, devuelve una respuesta exitosa (**200**) con los datos del artículo.
 5. Si hay un **error** en el proceso (por ejemplo, problemas con la base de datos), devuelve un **error 500** con detalles sobre el error.
 Este código permite que el usuario obtenga un solo tanque a partir de su ID de forma eficiente, manejando los posibles errores de manera clara y profesional.
+--------------------------------------------------------------------------------------------
+Metodo Borrar
+63.- Creación del metodo borrar, este metodo se define como una operación asincrónica (async), lo que significa que ejecutará procesos en segundo plano y esperará a que terminen antes de continuar con el siguiente paso.
+```javascript
+const borrar = async (req, res) => {
+```
+64.- Obtención del ID del Artículo, se extrae el ID del artículo que se quiere eliminar desde los parámetros de la URL de la solicitud.
+```javascript
+let id = req.param.id; // Obtener id desde los parametros de la url
+```
+65.- Intentar eliminar el artículo, se usa un try...catch para manejar posibles errores.
+```javascript
+try {
+    // Buscar y eliminar el artículo por su ID
+    const tanqueEliminado = await Tanques.findByIdAndDelete(id);
+```
+La función findByIdAndDelete(id) busca un artículo en la base de datos por su ID y lo elimina.
+66.- Verificación de la eliminación, si el artículo no se encontró, se responde con un mensaje de error y un código de estado 404 (No encontrado).
+```javascript
+if(!tanqueEliminado){
+    return res.status(404).json({
+        status: "error",
+        mensaje: "No se ha encontrado el artículo para eliminar"
+    });
+}
+```
+67.- Confirmación de la eliminación, si el artículo se eliminó correctamente, se responde con un mensaje de éxito y un código de estado 200 (OK).
+```javascript
+return res.status(200).json({
+    status: "success",
+    mensaje: "Artículo eliminado correctamente",
+    tanque: tanqueEliminado
+});
+```
+Error en el código original: return response.status(...) debe ser return res.status(...) para mantener la coherencia con res.
+68.- Manejo de errores, si ocurre un error inesperado, la API responde con un mensaje de error y un código de estado 500 (Error interno del servidor).
+```javascript
+} catch (error) {
+    return res.status(500).json({
+        status: "error",
+        mensaje: "Error al eliminar artículo",
+        error: error.message
+    });
+}
+```
