@@ -259,3 +259,73 @@ Error en el código original: return response.status(...) debe ser return res.st
     });
 }
 ```
+-------------------------------------------------------------------------------------------
+Metodo editar:
+Cuando un usuario envía una solicitud para actualizar un artículo, la API verifica que los datos sean válidos antes de proceder con la modificación. Si el artículo existe y se actualiza correctamente, se devuelve la nueva información; de lo contrario, se envía un mensaje de error.
+
+69.- Esta función se define como una operación asincrónica (async), lo que permite manejar operaciones en segundo plano sin bloquear el proceso principal.
+```javascript
+const update = async (req, res) => {...
+```
+70.- Se extrae el ID del artículo desde los parámetros de la URL de la solicitud.
+```javascript
+let id = req.params.id;
+```
+71.- Se extraen los datos enviados en el cuerpo de la solicitud y se validan para asegurarse de que no estén vacíos.
+```javascript
+let param = req.body;
+try {
+    let validador_nombre = !validator.isEmpty(param.nombre);
+    let validador_marca = !validator.isEmpty(param.marca);
+    let validador_capacidad = !validator.isEmpty(param.capacidad);
+    let validador_color = !validator.isEmpty(param.color);
+    let validador_reforzamiento = !validator.isEmpty(param.reforzamiento);
+    let validador_precio = !validator.isEmpty(param.precio);
+    if (!validador_nombre || !validador_marca || !validador_capacidad || !validador_color || !validador_reforzamiento || !validador_precio) {
+        throw new Error("Información no validada");
+    }
+} catch (error) {
+    return res.status(400).json({
+        status: "Error",
+        mensaje: "Faltan datos por enviar"
+    });
+}
+```
+Si falta algún dato obligatorio, se devuelve un error 400 (Solicitud incorrecta).
+72.- Si los datos son válidos, se busca el artículo en la base de datos por su ID y se actualiza con los nuevos datos.
+```javascript
+try {
+    // Buscar y actualizar tanque
+    const tanqueActualizado = await Tanques.findOneAndUpdate(
+        { _id: id }, 
+        req.body, 
+        { new: true } // Esto devuelve el documento actualizado
+    );
+```
+El parámetro { new: true } asegura que la API devuelva el artículo actualizado en la respuesta.
+73.- Si no se encuentra el artículo o la actualización falla, se devuelve un error 500 (Error interno del servidor).
+```javascript
+if (!tanqueActualizado) {
+    return res.status(500).json({
+        status: "error",
+        mensaje: "Error al actualizar"
+    });
+}
+```
+Si la operación es exitosa, se devuelve el artículo actualizado con un código 200 (OK).
+```javascript
+return res.status(200).json({
+    status: "success",
+    articulo: tanqueActualizado
+});
+```
+74.- Si ocurre un error inesperado, la API responde con un mensaje de error y un código de estado 500 (Error interno del servidor).
+```javascript
+} catch (error) {
+    return res.status(500).json({
+        status: "error",
+        mensaje: "Error en el servidor",
+        error: error.message
+    });
+}
+```
